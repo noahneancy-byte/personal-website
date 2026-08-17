@@ -77,6 +77,17 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
+        /* 滚动渐入动画 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* ============ 导航 — whisper-quiet ============ */
         .navbar {
             position: fixed;
@@ -132,7 +143,7 @@
             position: absolute;
             left: 0; bottom: -2px;
             width: 0; height: 1px;
-            background: var(--ink-black);
+            background: var(--sienna-brown);
             transition: width 0.25s;
         }
         .nav-links a:hover::after,
@@ -169,8 +180,9 @@
         .btn-filled {
             background: var(--ink-black);
             color: var(--paper-white);
+            box-shadow: 0 12px 26px -12px rgba(23, 25, 28, 0.55);
         }
-        .btn-filled:hover { opacity: 0.86; }
+        .btn-filled:hover { opacity: 0.92; transform: translateY(-2px); }
         .btn-ghost {
             background: transparent;
             color: var(--ink-black);
@@ -189,6 +201,16 @@
             text-transform: uppercase;
             letter-spacing: 0.08em;
             margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-label::before {
+            content: "";
+            width: 18px;
+            height: 2px;
+            border-radius: 2px;
+            background: var(--sienna-brown);
         }
         .section-title {
             font-family: var(--font-signifier);
@@ -199,7 +221,11 @@
             color: var(--ink-black);
             margin-bottom: 20px;
         }
-        .section-title em { font-style: italic; }
+        .section-title em { font-style: italic; color: var(--sienna-brown); }
+        .section-title-sm {
+            font-size: clamp(28px, 3.5vw, 38px);
+            letter-spacing: -0.01em;
+        }
         .section-subtitle {
             font-size: var(--text-body-lg);
             line-height: 1.5;
@@ -209,18 +235,38 @@
         }
 
         /* 交替分区背景 */
-        .band-fog { background: var(--fog-white); }
+        .band-fog {
+            background:
+                radial-gradient(ellipse at 88% 10%, rgba(251, 225, 209, 0.42), transparent 55%),
+                radial-gradient(ellipse at 6% 92%, rgba(211, 227, 252, 0.34), transparent 55%),
+                var(--fog-white);
+        }
+        #skills {
+            background:
+                radial-gradient(ellipse at 85% 22%, rgba(251, 225, 209, 0.4), transparent 55%),
+                radial-gradient(ellipse at 10% 80%, rgba(211, 227, 252, 0.34), transparent 55%);
+        }
+        #contact {
+            background:
+                radial-gradient(ellipse at 8% 15%, rgba(211, 227, 252, 0.3), transparent 55%),
+                radial-gradient(ellipse at 92% 85%, rgba(251, 225, 209, 0.4), transparent 55%);
+        }
 
         /* ============ Hero ============ */
         .hero {
             padding: 180px 32px 120px;
+            min-height: 100vh;
+            background:
+                radial-gradient(ellipse at 82% 16%, rgba(251, 225, 209, 0.6), transparent 50%),
+                radial-gradient(ellipse at 10% 84%, rgba(211, 227, 252, 0.5), transparent 50%);
+        }
+        .hero-inner {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1.1fr 0.9fr;
             gap: 64px;
             align-items: center;
-            min-height: 100vh;
         }
         .hero-label {
             display: inline-flex;
@@ -249,6 +295,8 @@
             font-style: italic;
             color: var(--sienna-brown);
             white-space: nowrap;
+            background: linear-gradient(transparent 62%, var(--blush-peach) 62%);
+            padding: 0 6px;
         }
         .hero-intro {
             font-size: var(--text-body-lg);
@@ -337,6 +385,29 @@
         .artifact-avatar .name { font-size: 15px; font-weight: 450; }
         .artifact-avatar .role { font-size: 13px; color: var(--ash-gray); }
 
+        .artifact-peach {
+            top: 300px;
+            right: 14px;
+            width: 200px;
+            background: var(--blush-peach);
+            box-shadow: none;
+            color: var(--sienna-brown);
+            z-index: 1;
+        }
+        .artifact-peach .peach-title {
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: 6px;
+        }
+        .artifact-peach .peach-text {
+            font-family: var(--font-signifier);
+            font-style: italic;
+            font-size: 17px;
+            line-height: 1.3;
+        }
+
         /* ============ 关于我 ============ */
         .about-grid {
             display: grid;
@@ -350,68 +421,182 @@
             color: var(--slate-gray);
             margin-bottom: 20px;
         }
-        .about-text p strong { color: var(--ink-black); font-weight: 450; }
-
-        .about-cards {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
+        .about-text p strong {
+            color: var(--ink-black);
+            font-weight: 450;
+            background: linear-gradient(transparent 60%, var(--blush-peach) 60%);
+            padding: 0 4px;
         }
-        .info-card {
+
+        /* ============ 思考与沉淀 ============ */
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .channel-card {
             background: var(--mist-gray);
             border-radius: var(--radius-card);
             padding: 28px 24px;
-            transition: background 0.2s;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.25s, box-shadow 0.25s, background 0.2s;
         }
-        .info-card:hover { background: #ececed; }
-        .info-card .icon { font-size: 22px; margin-bottom: 14px; display: block; }
-        .info-card h4 {
-            font-size: 14px;
-            font-weight: 400;
-            color: var(--ash-gray);
-            margin-bottom: 6px;
+        .channel-card:hover {
+            background: var(--paper-white);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
         }
-        .info-card p {
-            font-size: var(--text-subheading);
+
+        .channel-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+        .channel-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--blush-peach);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+        }
+        .channel-name {
+            font-size: 15px;
             font-weight: 450;
             color: var(--ink-black);
             letter-spacing: -0.01em;
         }
 
-        /* ============ 技能 ============ */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 16px;
+        .post {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            text-decoration: none;
+            color: var(--ink-black);
+            flex: 1;
         }
-        .skill-card {
-            background: var(--mist-gray);
-            border-radius: var(--radius-card);
-            padding: 32px 28px;
-            transition: background 0.2s;
+        .post-cover-wrap {
+            border-radius: var(--radius-image);
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+            background: var(--paper-white);
         }
-        .skill-card:hover { background: #ececed; }
-        .skill-card .icon { font-size: 24px; margin-bottom: 18px; display: block; }
-        .skill-card h3 {
+        .post-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        .post:hover .post-cover { transform: scale(1.06); }
+        .post-title {
+            font-family: var(--font-signifier);
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+        }
+        .post:hover .post-title { text-decoration: underline; text-underline-offset: 4px; }
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--ash-gray);
+            margin-top: auto;
+        }
+        .post-meta .go {
+            margin-left: auto;
+            font-size: 16px;
+            color: var(--ink-black);
+            transition: transform 0.2s;
+        }
+        .post:hover .post-meta .go { transform: translateX(4px); }
+
+        .empty-state {
+            flex: 1;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: 1px dashed var(--smoke-gray);
+            border-radius: var(--radius-image);
+            color: var(--ash-gray);
+            font-size: 14px;
+        }
+        .empty-state .plus {
+            font-size: 26px;
+            color: var(--smoke-gray);
+            line-height: 1;
+        }
+
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: var(--ink-black);
+            flex: 1;
+            padding: 8px 0;
+            text-align: center;
+        }
+        .profile-avatar {
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--paper-white);
+            border: 3px solid var(--paper-white);
+            box-shadow: var(--shadow-artifact);
+        }
+        .profile-name {
             font-family: var(--font-signifier);
             font-weight: 400;
             font-size: 22px;
             letter-spacing: -0.01em;
-            margin-bottom: 10px;
+            margin-top: 10px;
         }
-        .skill-card p {
-            font-size: 15px;
-            color: var(--slate-gray);
-            line-height: 1.5;
-            margin-bottom: 20px;
-        }
-        .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-        .tag {
+        .profile-id {
             font-size: 13px;
             color: var(--ash-gray);
-            /* 幽灵标签：无背景无边框 */
         }
-        .tag + .tag::before { content: "·"; margin-right: 8px; color: var(--smoke-gray); }
+        .profile-stats {
+            display: flex;
+            gap: 22px;
+            margin-top: 14px;
+        }
+        .profile-stats .stat { text-align: center; }
+        .profile-stats .num {
+            display: block;
+            font-size: 17px;
+            font-weight: 500;
+            color: var(--ink-black);
+        }
+        .profile-stats .label {
+            font-size: 12px;
+            color: var(--ash-gray);
+        }
+        .profile-go {
+            margin-top: auto;
+            padding-top: 18px;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--ink-black);
+        }
+        .profile:hover .profile-go { text-decoration: underline; text-underline-offset: 4px; }
+
+        @media (max-width: 900px) {
+            .channels-grid { grid-template-columns: 1fr; }
+        }
 
         /* ============ 作品 ============ */
         .projects-grid {
@@ -425,14 +610,18 @@
             padding: 36px 32px;
             display: flex;
             flex-direction: column;
-            transition: background 0.2s, transform 0.2s;
+            transition: transform 0.25s, box-shadow 0.25s, background 0.2s;
         }
-        .project-card:hover { background: #ececed; }
+        .project-card:hover {
+            background: var(--paper-white);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
         .project-index {
             font-family: var(--font-signifier);
             font-style: italic;
             font-size: 15px;
-            color: var(--ash-gray);
+            color: var(--sienna-brown);
             margin-bottom: 16px;
         }
         .project-card h3 {
@@ -455,7 +644,15 @@
             align-items: center;
             justify-content: space-between;
         }
-        .project-tags { display: flex; gap: 10px; }
+        .project-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+        .project-tags .tag {
+            font-size: 12px;
+            color: var(--ink-black);
+            background: var(--paper-white);
+            border: 1px solid var(--hairline);
+            padding: 4px 12px;
+            border-radius: var(--radius-pill);
+        }
         .project-link {
             text-decoration: none;
             color: var(--ink-black);
@@ -464,75 +661,9 @@
         }
         .project-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 
-        /* ============ 文章 ============ */
-        .articles-list { border-top: 1px solid var(--hairline); }
-        .article-item {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 24px;
-            align-items: center;
-            padding: 36px 0;
-            border-bottom: 1px solid var(--hairline);
-            text-decoration: none;
-            color: var(--ink-black);
-            transition: padding-left 0.25s;
-        }
-        .article-item:last-child { border-bottom: none; }
-        .article-item:hover { padding-left: 12px; }
-
-        .article-source {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-        .article-source .badge {
-            padding: 4px 12px;
-            border-radius: var(--radius-pill);
-            border: 1px solid var(--smoke-gray);
-            color: var(--ash-gray);
-            font-size: 12px;
-            line-height: 1;
-        }
-        .article-source .category {
-            font-size: 13px;
-            color: var(--ash-gray);
-            letter-spacing: 0.02em;
-        }
-        .article-item h3 {
-            font-family: var(--font-signifier);
-            font-weight: 400;
-            font-size: 26px;
-            line-height: 1.18;
-            letter-spacing: -0.01em;
-            margin-bottom: 10px;
-        }
-        .article-item .excerpt {
-            font-size: 15px;
-            line-height: 1.5;
-            color: var(--slate-gray);
-            max-width: 680px;
-        }
-        .article-meta {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 14px;
-            color: var(--ash-gray);
-            margin-top: 14px;
-        }
-        .article-meta .sep { color: var(--smoke-gray); }
-        .article-arrow {
-            font-size: 22px;
-            color: var(--ink-black);
-            transition: transform 0.2s;
-        }
-        .article-item:hover .article-arrow { transform: translateX(4px); }
-        .articles-more { margin-top: 40px; }
-
         /* ============ 联系 — 桃色强调卡片（整页唯一） ============ */
         .contact-card {
-            background: var(--blush-peach);
+            background: linear-gradient(135deg, var(--blush-peach) 0%, #f8d9c5 100%);
             border-radius: var(--radius-card);
             padding: 64px;
             color: var(--sienna-brown);
@@ -640,8 +771,10 @@
         @media (max-width: 900px) {
             .nav-links { display: none; }
             .hero {
-                grid-template-columns: 1fr;
                 padding: 140px 24px 80px;
+            }
+            .hero-inner {
+                grid-template-columns: 1fr;
                 gap: 80px;
             }
             .hero h1 { font-size: clamp(40px, 10vw, 64px); }
@@ -654,7 +787,7 @@
             .artifact-stat { right: 0; top: 10px; }
             .artifact-quote { left: 0; top: 220px; width: 220px; }
             .artifact-avatar { left: 10px; top: 0; }
-            .about-cards { grid-template-columns: 1fr; }
+            .artifact-peach { right: 0; top: 300px; width: 170px; }
         }
     </style>
 </head>
@@ -663,27 +796,27 @@
     <!-- 导航栏 -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="#home" class="logo">你的<em>名字</em></a>
+            <a href="#home" class="logo">兰<em>依依</em></a>
             <ul class="nav-links">
                 <li><a href="#home" class="active">首页</a></li>
                 <li><a href="#about">关于</a></li>
-                <li><a href="#skills">技能</a></li>
+                <li><a href="#skills">思考</a></li>
                 <li><a href="#projects">作品</a></li>
-                <li><a href="#articles">文章</a></li>
                 <li><a href="#contact">联系</a></li>
             </ul>
-            <a href="#contact" class="nav-cta">联系我</a>
+            <a href="https://github.com/noahneancy-byte" class="nav-cta" target="_blank" rel="noopener">我的 GitHub</a>
         </div>
     </nav>
 
     <!-- 首页 Hero -->
     <section class="hero" id="home">
-        <div class="hero-copy">
-            <span class="hero-label"><span class="dot"></span>个人网站 · 作品集</span>
-            <h1>你好，我是<br><em>你的名字</em></h1>
+        <div class="hero-inner">
+            <div class="hero-copy">
+            <span class="hero-label"><span class="dot"></span>AI 产品经理 · 独立开发者</span>
+            <h1>你好，我是<br><em>兰依依</em></h1>
             <p class="hero-intro">
-                一名热爱创造的开发者与设计师。我相信持续学习与分享，
-                用代码把创意变成优雅而实用的产品。
+                一名 AI 产品经理，也是一名 AI 产品独立开发者。我相信 AI 正在重塑产品的形态，
+                喜欢从 0 到 1 把想法做成真正可用的产品。
             </p>
             <div class="btn-row">
                 <a href="#projects" class="btn btn-filled">查看作品</a>
@@ -701,16 +834,21 @@
                 </svg>
             </div>
             <div class="artifact artifact-avatar">
-                <div class="avatar-bubble">YN</div>
+                <div class="avatar-bubble">LY</div>
                 <div>
-                    <div class="name">你的名字</div>
-                    <div class="role">开发者 · 设计师</div>
+                    <div class="name">兰依依</div>
+                    <div class="role">AI 产品经理 · 独立开发者</div>
                 </div>
             </div>
             <div class="artifact artifact-quote">
                 <div class="quote">"细节与体验的完美结合，是我始终的追求。"</div>
                 <div class="author">— 关于我</div>
             </div>
+            <div class="artifact artifact-peach">
+                <div class="peach-title">正在探索</div>
+                <div class="peach-text">用 AI 重塑产品体验</div>
+            </div>
+        </div>
         </div>
     </section>
 
@@ -718,42 +856,38 @@
     <section id="about" class="band-fog">
         <div class="section-container">
             <div class="section-label">01 · About</div>
-            <h2 class="section-title">关于<em>我</em></h2>
+            <h2 class="section-title section-title-sm">关于<em>我</em></h2>
             <div class="about-grid">
                 <div class="about-text">
                     <p>
-                        <strong>你好！</strong>我是一名充满热情的开发者，拥有多年的编程经验。
-                        我热爱把创意变成现实，无论是网页、应用还是工具，都追求细节与体验的完美结合。
+                        <strong>你好！</strong>我是兰依依，一名 AI 产品经理，也是一名 AI 产品独立开发者。
+                        我专注于把 AI 能力转化为真正好用的产品，从需求洞察、产品设计到技术落地，
+                        追求每个细节与体验的完美结合。
                     </p>
                     <p>
-                        工作之外，我喜欢阅读、旅行和摄影，也乐于在开源社区里贡献自己的力量。
-                        我相信持续学习和分享是成长最好的方式。
+                        我习惯独立完成从 0 到 1 的产品构建——调研、设计、开发、上线、迭代，
+                        享受把想法一步步变成现实的过程，也乐于在写作与分享中沉淀自己的思考。
                     </p>
                     <p>
-                        如果你有有趣的想法或合作机会，欢迎随时联系我，一起聊聊。
+                        如果你有有趣的 AI 想法或合作机会，欢迎随时联系我，一起聊聊。
                     </p>
                 </div>
-                <div class="about-cards">
-                    <div class="info-card">
-                        <span class="icon">🎯</span>
-                        <h4>所在城市</h4>
-                        <p>北京 / 上海</p>
+                <div class="channel-card">
+                    <div class="channel-head">
+                        <span class="channel-icon">📕</span>
+                        <span class="channel-name">小红书</span>
                     </div>
-                    <div class="info-card">
-                        <span class="icon">💼</span>
-                        <h4>工作经验</h4>
-                        <p>5+ 年</p>
-                    </div>
-                    <div class="info-card">
-                        <span class="icon">🎓</span>
-                        <h4>学历</h4>
-                        <p>本科 / 硕士</p>
-                    </div>
-                    <div class="info-card">
-                        <span class="icon">🌟</span>
-                        <h4>兴趣爱好</h4>
-                        <p>编程 / 摄影 / 旅行</p>
-                    </div>
+                    <a href="https://www.xiaohongshu.com/user/profile/64a53844000000002a035d54" class="profile" target="_blank" rel="noopener">
+                        <img class="profile-avatar" src="images/xhs-avatar.jpg" alt="茄汁堡er（学习版）的头像">
+                        <h4 class="profile-name">茄汁堡er（学习版）</h4>
+                        <span class="profile-id">小红书号：9770981338</span>
+                        <div class="profile-stats">
+                            <div class="stat"><span class="num">50</span><span class="label">关注</span></div>
+                            <div class="stat"><span class="num">45</span><span class="label">粉丝</span></div>
+                            <div class="stat"><span class="num">11</span><span class="label">获赞与收藏</span></div>
+                        </div>
+                        <span class="profile-go">查看主页 →</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -762,34 +896,58 @@
     <!-- 技能 -->
     <section id="skills">
         <div class="section-container">
-            <div class="section-label">02 · Skills</div>
-            <h2 class="section-title">我的<em>技能</em></h2>
-            <p class="section-subtitle">我擅长的一些领域和技术栈，安静而专注。</p>
-            <div class="skills-grid">
-                <div class="skill-card">
-                    <span class="icon">🌐</span>
-                    <h3>前端开发</h3>
-                    <p>构建响应式、高性能的用户界面，注重可访问性与细节体验。</p>
-                    <div class="skill-tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">React</span></div>
+            <div class="section-label">02 · Thoughts</div>
+            <h2 class="section-title">关于我的<em>思考与沉淀</em></h2>
+            <p class="section-subtitle">我在写作与分享中沉淀下的思考与记录。</p>
+            <div class="channels-grid">
+                <!-- 渠道 1：人人都是产品经理 -->
+                <div class="channel-card">
+                    <div class="channel-head">
+                        <span class="channel-icon">✍️</span>
+                        <span class="channel-name">人人都是产品经理</span>
+                    </div>
+                    <a href="https://www.woshipm.com/ai/6443744.html" class="post" target="_blank" rel="noopener">
+                        <div class="post-cover-wrap"><img class="post-cover" src="images/article-woshipm-1.png" alt="当Agent成为产品的新用户：AI产品经理该如何设计AX？" loading="lazy"></div>
+                        <h4 class="post-title">当Agent成为产品的新用户：AI产品经理该如何设计AX？</h4>
+                        <div class="post-meta">
+                            <span>2026-08-11</span>
+                            <span>·</span>
+                            <span>茄汁堡er</span>
+                            <span class="go">→</span>
+                        </div>
+                    </a>
                 </div>
-                <div class="skill-card">
-                    <span class="icon">⚙️</span>
-                    <h3>后端开发</h3>
-                    <p>设计稳健的服务与数据模型，关注性能、安全与可维护性。</p>
-                    <div class="skill-tags"><span class="tag">Python</span><span class="tag">Node.js</span><span class="tag">数据库</span></div>
+
+                <!-- 渠道 2：公众号 -->
+                <div class="channel-card">
+                    <div class="channel-head">
+                        <span class="channel-icon">💬</span>
+                        <span class="channel-name">公众号</span>
+                    </div>
+                    <a href="https://mp.weixin.qq.com/s/bUnG0EZCzbk4KqWUWd-KlA" class="post" target="_blank" rel="noopener">
+                        <div class="post-cover-wrap"><img class="post-cover" src="images/article-wechat-1.jpg" alt="AI 产品经理的下一站，是 FDE 吗？" loading="lazy"></div>
+                        <h4 class="post-title">AI 产品经理的下一站，是 FDE 吗？</h4>
+                        <div class="post-meta">
+                            <span>2026-08-09</span>
+                            <span>·</span>
+                            <span>赛博茄汁堡er</span>
+                            <span class="go">→</span>
+                        </div>
+                    </a>
                 </div>
-                <div class="skill-card">
-                    <span class="icon">🎨</span>
-                    <h3>UI / UX 设计</h3>
-                    <p>以编辑部式的克制审美，打造清晰、优雅的产品体验。</p>
-                    <div class="skill-tags"><span class="tag">Figma</span><span class="tag">设计规范</span><span class="tag">交互</span></div>
+
+                <!-- 渠道 3：少数派 -->
+                <div class="channel-card">
+                    <div class="channel-head">
+                        <span class="channel-icon">📰</span>
+                        <span class="channel-name">少数派</span>
+                    </div>
+                    <div class="empty-state">
+                        <span class="plus">⏳</span>
+                        <span>文章审核中 · 即将上线</span>
+                    </div>
                 </div>
-                <div class="skill-card">
-                    <span class="icon">📱</span>
-                    <h3>移动开发</h3>
-                    <p>跨平台应用与小程序，让好用的产品触手可及。</p>
-                    <div class="skill-tags"><span class="tag">Flutter</span><span class="tag">小程序</span></div>
-                </div>
+
             </div>
         </div>
     </section>
@@ -854,61 +1012,10 @@
         </div>
     </section>
 
-    <!-- 文章 -->
-    <section id="articles">
-        <div class="section-container">
-            <div class="section-label">04 · Articles</div>
-            <h2 class="section-title">我的<em>文章</em></h2>
-            <p class="section-subtitle">在「人人都是产品经理」与公众号上持续输出的思考与分享。</p>
-            <div class="articles-list">
-                <!-- 每一篇文章是一个 <a>，替换 href、标题、摘要、日期即可 -->
-                <a href="#" class="article-item" target="_blank">
-                    <div>
-                        <span class="article-source"><span class="badge">人人都是产品经理</span><span class="category">产品</span></span>
-                        <h3>产品经理如何做好需求分析</h3>
-                        <p class="excerpt">从用户调研到需求优先级排序，拆解一套可落地的需求分析方法论。</p>
-                        <div class="article-meta"><span>2025-01-15</span><span class="sep">·</span><span>8 分钟阅读</span></div>
-                    </div>
-                    <span class="article-arrow">→</span>
-                </a>
-                <a href="#" class="article-item" target="_blank">
-                    <div>
-                        <span class="article-source"><span class="badge">公众号</span><span class="category">产品</span></span>
-                        <h3>我的产品方法论：从想法到落地</h3>
-                        <p class="excerpt">记录我在产品设计中的思考框架与踩坑经验，写给同路人。</p>
-                        <div class="article-meta"><span>2024-12-02</span><span class="sep">·</span><span>6 分钟阅读</span></div>
-                    </div>
-                    <span class="article-arrow">→</span>
-                </a>
-                <a href="#" class="article-item" target="_blank">
-                    <div>
-                        <span class="article-source"><span class="badge">人人都是产品经理</span><span class="category">设计</span></span>
-                        <h3>从 0 到 1 搭建设计系统</h3>
-                        <p class="excerpt">如何用一套克制、统一的组件体系，让团队协作更高效。</p>
-                        <div class="article-meta"><span>2024-10-20</span><span class="sep">·</span><span>10 分钟阅读</span></div>
-                    </div>
-                    <span class="article-arrow">→</span>
-                </a>
-                <a href="#" class="article-item" target="_blank">
-                    <div>
-                        <span class="article-source"><span class="badge">公众号</span><span class="category">技术</span></span>
-                        <h3>写给初学者的编程学习指南</h3>
-                        <p class="excerpt">一份循序渐进的学习路径，帮助你少走弯路、建立信心。</p>
-                        <div class="article-meta"><span>2024-08-11</span><span class="sep">·</span><span>5 分钟阅读</span></div>
-                    </div>
-                    <span class="article-arrow">→</span>
-                </a>
-            </div>
-            <div class="articles-more">
-                <a href="#" class="btn btn-ghost" target="_blank">查看全部文章 →</a>
-            </div>
-        </div>
-    </section>
-
     <!-- 联系 — 唯一的桃色强调卡片 -->
     <section id="contact">
         <div class="section-container">
-            <div class="section-label">05 · Contact</div>
+            <div class="section-label">04 · Contact</div>
             <div class="contact-card">
                 <div>
                     <h2>一起聊聊，<br><em>从一杯咖啡开始。</em></h2>
@@ -934,7 +1041,7 @@
 
     <!-- 页脚 -->
     <footer>
-        <p>© 2025 <a href="#home">你的名字</a> · 用 ❤ 制作 · 设计参考 Refero「Steep」</p>
+        <p>© 2025 <a href="#home">兰依依</a> · 用 ❤ 制作 · 设计参考 Refero「Steep」</p>
     </footer>
 
     <!-- 返回顶部 -->
@@ -967,6 +1074,19 @@
         backTop.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
+
+        // 滚动渐入动画
+        const revealEls = document.querySelectorAll('.section-title, .section-subtitle, .section-label, .about-grid, .contact-card');
+        revealEls.forEach(el => el.classList.add('reveal'));
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+        revealEls.forEach(el => revealObserver.observe(el));
     </script>
 </body>
 </html>
